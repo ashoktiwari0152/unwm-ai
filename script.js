@@ -1,11 +1,13 @@
 const API_URL = "https://unwm-ai1.onrender.com";
 
-const input = document.getElementById("user-input");
+const inputBox = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
 const chatBox = document.getElementById("chat-box");
 const historyBox = document.getElementById("history-box");
 
 let chats = JSON.parse(localStorage.getItem("unwm_chats")) || [];
+
+renderHistory();
 
 function saveChats() {
     localStorage.setItem(
@@ -16,11 +18,9 @@ function saveChats() {
 
 function renderHistory() {
 
-    if (!historyBox) return;
-
     historyBox.innerHTML = "";
 
-    chats.forEach((chat, index) => {
+    chats.forEach((chat) => {
 
         const div = document.createElement("div");
 
@@ -56,13 +56,13 @@ function addMessage(text, className) {
 
 async function sendMessage() {
 
-    const message = input.value.trim();
+    const message = inputBox.value.trim();
 
     if (!message) return;
 
     addMessage(message, "user-message");
 
-    input.value = "";
+    inputBox.value = "";
 
     try {
 
@@ -75,19 +75,14 @@ async function sendMessage() {
             },
 
             body: JSON.stringify({
-                text: message
+                topic: message,
+                depth: "normal"
             })
         });
 
         const data = await response.json();
 
-        console.log(data);
-
-        const botReply =
-            data.response ||
-            data.reply ||
-            data.message ||
-            JSON.stringify(data);
+        const botReply = data.response;
 
         addMessage(botReply, "bot-message");
 
@@ -102,12 +97,12 @@ async function sendMessage() {
 
     } catch (error) {
 
-        console.log(error);
-
         addMessage(
             "Server Error",
             "bot-message"
         );
+
+        console.error(error);
     }
 }
 
@@ -116,9 +111,9 @@ sendBtn.addEventListener(
     sendMessage
 );
 
-input.addEventListener(
+inputBox.addEventListener(
     "keypress",
-    function(e) {
+    function (e) {
 
         if (e.key === "Enter") {
 
@@ -126,5 +121,3 @@ input.addEventListener(
         }
     }
 );
-
-renderHistory();
