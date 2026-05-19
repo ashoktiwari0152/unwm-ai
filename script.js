@@ -1,15 +1,18 @@
-const API_URL = "https://unwm-ai1.onrender.com";
+const API_URL = "https://unwm-ai.onrender.com/generate";
 
 const inputBox = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
 const chatBox = document.getElementById("chat-box");
 const historyBox = document.getElementById("history-box");
 
-let chats = JSON.parse(localStorage.getItem("unwm_chats")) || [];
+let chats = JSON.parse(
+    localStorage.getItem("unwm_chats")
+) || [];
 
 renderHistory();
 
 function saveChats() {
+
     localStorage.setItem(
         "unwm_chats",
         JSON.stringify(chats)
@@ -32,9 +35,15 @@ function renderHistory() {
 
             chatBox.innerHTML = "";
 
-            addMessage(chat.user, "user-message");
+            addMessage(
+                chat.user,
+                "user-message"
+            );
 
-            addMessage(chat.bot, "bot-message");
+            addMessage(
+                chat.bot,
+                "bot-message"
+            );
         };
 
         historyBox.appendChild(div);
@@ -51,40 +60,58 @@ function addMessage(text, className) {
 
     chatBox.appendChild(div);
 
-    chatBox.scrollTop = chatBox.scrollHeight;
+    chatBox.scrollTop =
+        chatBox.scrollHeight;
 }
 
 async function sendMessage() {
 
-    const message = inputBox.value.trim();
+    const message =
+        inputBox.value.trim();
 
     if (!message) return;
 
-    addMessage(message, "user-message");
+    addMessage(
+        message,
+        "user-message"
+    );
 
     inputBox.value = "";
 
     try {
 
-        const response = await fetch(API_URL, {
+        const response = await fetch(
+            API_URL,
+            {
+                method: "POST",
 
-            method: "POST",
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+                body: JSON.stringify({
+                    topic: message,
+                    depth: "normal"
+                })
+            }
+        );
 
-            body: JSON.stringify({
-                topic: message,
-                depth: "normal"
-            })
-        });
+        const data =
+            await response.json();
 
-        const data = await response.json();
+        console.log(data);
 
-        const botReply = data.response;
+        const botReply =
+            data.response ||
+            data.reply ||
+            data.message ||
+            JSON.stringify(data);
 
-        addMessage(botReply, "bot-message");
+        addMessage(
+            botReply,
+            "bot-message"
+        );
 
         chats.push({
             user: message,
@@ -97,12 +124,12 @@ async function sendMessage() {
 
     } catch (error) {
 
+        console.error(error);
+
         addMessage(
             "Server Error",
             "bot-message"
         );
-
-        console.error(error);
     }
 }
 
