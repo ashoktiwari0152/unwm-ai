@@ -1,17 +1,13 @@
 const API_URL = "https://unwm-ai1.onrender.com";
 
 const input = document.getElementById("user-input");
-
 const sendBtn = document.getElementById("send-btn");
-
 const chatBox = document.getElementById("chat-box");
-
 const historyBox = document.getElementById("history-box");
 
 let chats = JSON.parse(localStorage.getItem("unwm_chats")) || [];
 
 function saveChats() {
-
     localStorage.setItem(
         "unwm_chats",
         JSON.stringify(chats)
@@ -19,6 +15,8 @@ function saveChats() {
 }
 
 function renderHistory() {
+
+    if (!historyBox) return;
 
     historyBox.innerHTML = "";
 
@@ -85,7 +83,11 @@ async function sendMessage() {
 
         console.log(data);
 
-        const botReply = data.response;
+        const botReply =
+            data.response ||
+            data.reply ||
+            data.message ||
+            JSON.stringify(data);
 
         addMessage(botReply, "bot-message");
 
