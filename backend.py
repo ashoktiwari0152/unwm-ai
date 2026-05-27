@@ -314,7 +314,7 @@ async def generate(data: PromptRequest):
         "timestamp": str(datetime.now()),
         "topic": data.topic,
         "depth": data.depth,
-        "response": ai_response
+        "response": ai_response,
         "recursives_analysis": analysis
 
     }
