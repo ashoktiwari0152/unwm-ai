@@ -1,35 +1,14 @@
-const API_URL = "secure-elegance-production-4e74.up.railway.app/generate";
+async function sendPrompt() {
 
-const inputBox = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
-const chatBox = document.getElementById("chat-box");
+    const input = document.getElementById("prompt").value;
 
-function addMessage(text, className) {
+    const result = document.getElementById("result");
 
-    const div = document.createElement("div");
-
-    div.className = className;
-
-    div.innerText = text;
-
-    chatBox.appendChild(div);
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-async function sendMessage() {
-
-    const message = inputBox.value.trim();
-
-    if (!message) return;
-
-    addMessage(message, "user-message");
-
-    inputBox.value = "";
+    result.innerHTML = "Loading...";
 
     try {
 
-        const response = await fetch(API_URL, {
+        const response = await fetch("https://secure-elegance-production-4e74.up.railway.app/generate", {
 
             method: "POST",
 
@@ -38,37 +17,32 @@ async function sendMessage() {
             },
 
             body: JSON.stringify({
-                topic: message,
-                depth: "medium"
+                topic: input,
+                depth: "normal"
             })
+
         });
 
         const data = await response.json();
 
         console.log(data);
 
-        const botReply =
-            data.response ||
-            data.reply ||
-            data.message ||
-            JSON.stringify(data);
+        result.innerHTML = `
 
-        addMessage(botReply, "bot-message");
+            <h2>AI Response</h2>
+            <p>${data.response}</p>
+
+            <h2>Recursive Analysis</h2>
+            <pre>${JSON.stringify(data.recursives_analysis, null, 2)}</pre>
+
+        `;
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
 
-        addMessage("Server Error", "bot-message");
+        result.innerHTML = "Server Error";
+
     }
+
 }
-
-sendBtn.addEventListener("click", sendMessage);
-
-inputBox.addEventListener("keypress", function (e) {
-
-    if (e.key === "Enter") {
-
-        sendMessage();
-    }
-});
