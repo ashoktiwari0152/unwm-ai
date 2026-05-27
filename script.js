@@ -1,4 +1,4 @@
-const API_URL = "https://unwm-ai1.onrender.com/generate";
+const API_URL = "secure-elegance-production-4e74.up.railway.app";
 
 const inputBox = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
