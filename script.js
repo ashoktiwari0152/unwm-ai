@@ -1,6 +1,6 @@
 async function sendPrompt() {
 
-    const input = document.getElementById("prompt").value;
+    const input = document.getElementById("user-input").value;
 
     const result = document.getElementById("result");
 
