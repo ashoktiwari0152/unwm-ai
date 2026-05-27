@@ -3,6 +3,7 @@ def recursive_analysis(user_input):
     text = user_input.lower()
 
     recursive_keywords = [
+
         "recursive",
         "collapse",
         "instability",
@@ -13,11 +14,12 @@ def recursive_analysis(user_input):
         "origin",
         "generative",
         "construct",
-        "formal",
+        "formula",
         "axiom",
         "system",
         "cogniz",
         "knowability"
+
     ]
 
     detected_patterns = []
@@ -36,62 +38,59 @@ def recursive_analysis(user_input):
 
             score += count
 
-    recursion_density = min(score / 10, 1.0)
+    recursive_density = round(score / 10, 2)
 
-    collapse_risk = min(
-        recursion_density * 1.4,
-        1.0
+    collapse_risk = round(
+        min(score / 10, 1),
+        2
     )
 
-    stability_index = max(
-        1.0 - collapse_risk,
-        0.0
+    stability_index = round(
+        max(1 - collapse_risk, 0),
+        2
     )
 
     if collapse_risk > 0.7:
-        state = "recursive destabilization"
+
+        recursive_state =
+        "recursive destabilization"
 
     elif collapse_risk > 0.4:
-        state = "recursive escalation"
+
+        recursive_state =
+        "recursive fluctuation"
 
     else:
-        state = "recursive stability"
 
-    result = {
+        recursive_state =
+        "active"
 
-        "recursive_state": state,
+    return {
 
-        "collapse_risk": round(
-            collapse_risk,
-            3
-        ),
+        "recursive_state":
+        recursive_state,
 
-        "stability_index": round(
-            stability_index,
-            3
-        ),
+        "collapse_risk":
+        collapse_risk,
 
-        "recursive_density": round(
-            recursion_density,
-            3
-        ),
+        "stability_index":
+        stability_index,
 
-        "patterns_detected": detected_patterns,
+        "recursive_density":
+        recursive_density,
+
+        "patterns_detected":
+        detected_patterns,
 
         "meta_analysis": {
 
             "self_reference_detected":
             "self" in text,
 
-            "anti_recursive_detected":
-            "anti" in text,
+            "meta_layer_detected":
+            "meta" in text,
 
-            "non_recursive_detected":
-            "non" in text,
-
-            "collapse_dynamics_detected":
-            "collapse" in text
+            "anti_structure_detected":
+            "anti" in text
         }
     }
-
-    return result
