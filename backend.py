@@ -1,3 +1,4 @@
+from arcrs.recursive_engine import recursive_analysis
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -300,6 +301,8 @@ async def root():
 @app.post("/generate")
 async def generate(data: PromptRequest):
 
+    analysis = recursive_analysis(data.topic)
+    
     ai_response = ask_groq(
         data.topic,
         data.depth
@@ -312,6 +315,7 @@ async def generate(data: PromptRequest):
         "topic": data.topic,
         "depth": data.depth,
         "response": ai_response
+        "recursives_analysis": analysis
 
     }
 
