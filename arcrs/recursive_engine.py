@@ -69,7 +69,7 @@ def recursive_analysis(user_input):
 
         recursive_state = "active"
 
-    return {
+    result = {
 
         "recursive_state":
         recursive_state,
@@ -98,3 +98,5 @@ def recursive_analysis(user_input):
             "anti" in text
         }
     }
+
+    return result
