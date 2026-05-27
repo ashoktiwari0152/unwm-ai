@@ -38,7 +38,10 @@ def recursive_analysis(user_input):
 
             score += count
 
-    recursive_density = round(score / 10, 2)
+    recursive_density = round(
+        score / 10,
+        2
+    )
 
     collapse_risk = round(
         min(score / 10, 1),
@@ -52,18 +55,19 @@ def recursive_analysis(user_input):
 
     if collapse_risk > 0.7:
 
-        recursive_state =
-        "recursive destabilization"
+        recursive_state = (
+            "recursive destabilization"
+        )
 
     elif collapse_risk > 0.4:
 
-        recursive_state =
-        "recursive fluctuation"
+        recursive_state = (
+            "recursive fluctuation"
+        )
 
     else:
 
-        recursive_state =
-        "active"
+        recursive_state = "active"
 
     return {
 
